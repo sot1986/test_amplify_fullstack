@@ -23,6 +23,18 @@ const resetPost = () => {
   };
 };
 
+const loadPosts = async () => {
+  try {
+    const { data, error } = await useFetch("/api/posts");
+    if (error.value) {
+      console.error(error.value.message);
+    }
+    if (data.value) {
+      posts.value = [...data.value.data];
+    }
+  } catch (error) {}
+};
+
 const savePost = () =>
   useAsyncData(async () => {
     try {
@@ -42,6 +54,10 @@ const savePost = () =>
       console.error(error);
     }
   });
+
+onMounted(() => {
+  loadPosts();
+});
 </script>
 
 <template>
